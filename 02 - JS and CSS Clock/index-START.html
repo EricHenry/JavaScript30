@@ -61,12 +61,44 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: 100%; /*the rotation point will be all the way to the right, default is 50% (middle) and all the way to the left is 0%*/
+      transform: rotate(90deg);
+      transition: all 0.05s; /* all animations will be 0.05 seconds long */
+      transition-timing-function: cubic-bezier(0.1, 2.7)
     }
 
   </style>
 
   <script>
 
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+
+    function setDate() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
+
+      // time / int = the amount of time in base 10
+      // multiply by 360 to get that time relative to 360
+      const secondsDegrees = ((seconds / 60) * 360) + 90; //add 90 degs to off set the default 90deg in the .hand class
+      const minutesDegrees = ((minutes / 60) * 360) + 90;
+      const hoursDegrees = ((hours / 12) * 360) + 90;
+
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+
+      console.group("time");
+      console.log(seconds, secondsDegrees);
+      console.log(minutes, minutesDegrees);
+      console.log(hours, hoursDegrees);
+      console.groupEnd()
+    }
+
+    setInterval(setDate, 1000);
 
   </script>
 </body>
